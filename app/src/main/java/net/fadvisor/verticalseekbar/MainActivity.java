@@ -7,8 +7,8 @@ package net.fadvisor.verticalseekbar;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
 
@@ -18,19 +18,34 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final View rl2 = findViewById(R.id.rl2);
 
-        //this.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, theSizeIWant));
+        rl2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
 
-        View rl1 = (View) findViewById(R.id.rl1);
-        View rl2 = (View) findViewById(R.id.rl2);
+                int min = Math.min(rl2.getWidth(), rl2.getHeight());
+                int w = rl2.getWidth();
+                int h =rl2.getHeight();
 
-        Log.d("fad-1H", Integer.toString(rl1.getHeight()));
-        Log.d("fad-1W", Integer.toString(rl1.getWidth()));
-        Log.d("fad-2H", Integer.toString(rl2.getHeight()));
+                rl2.setRotation(270.0f);
+                rl2.invalidate();
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(h, w);
+                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                rl2.setLayoutParams(params);
 
-//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) someLayout.getLayoutParams();
-//        params.height = 130;
-//        someLayout.setLayoutParams(params);
+
+                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
+                    rl2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                else
+                    rl2.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                rl2.requestLayout();
+                //rl2.invalidate();
+            }
+        });
+
     }
 
 }
