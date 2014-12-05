@@ -25,12 +25,11 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onGlobalLayout() {
 
-                int min = Math.min(rl2.getWidth(), rl2.getHeight());
+                //int min = Math.min(rl2.getWidth(), rl2.getHeight());
                 int w = rl2.getWidth();
                 int h =rl2.getHeight();
 
                 rl2.setRotation(270.0f);
-                rl2.invalidate();
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(h, w);
                 params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
                 rl2.setLayoutParams(params);
@@ -40,9 +39,6 @@ public class MainActivity extends ActionBarActivity {
                     rl2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 else
                     rl2.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-                rl2.requestLayout();
-                //rl2.invalidate();
             }
         });
 
